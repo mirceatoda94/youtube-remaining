@@ -22,7 +22,7 @@ function mount() {
   sep.className = "ytp-time-separator";
   sep.textContent = " | ";
   sep.style.marginLeft = "6px";
-  sep.style.marginRight = "0px";
+  sep.style.marginRight = "6px";
   sep.style.color = "#fff";
   container.appendChild(sep);
 

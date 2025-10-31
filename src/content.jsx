@@ -3,26 +3,38 @@ import { createRoot } from "react-dom/client";
 import RemainingTime from "./remaining/RemainingTime.jsx";
 
 function mount() {
-  const display = document.querySelector(".ytp-time-display");
-  if (!display) return;
+  const contents = document.querySelector(
+    ".ytp-time-display .ytp-time-contents"
+  );
+  if (!contents) return;
 
-  display.style.display = "flex";
-  display.style.alignItems = "center";
-  display.style.gap = "4px";
+  if (contents.querySelector("#yt-remaining-root")) return;
 
-  if (display.querySelector("#yt-remaining-root")) return;
+  const durationEl = contents.querySelector(".ytp-time-duration");
+  if (!durationEl) return;
 
   const container = document.createElement("span");
   container.id = "yt-remaining-root";
-  display.appendChild(container);
+  container.style.display = "inline-flex";
+  container.style.alignItems = "center";
 
-  const root = createRoot(container);
-  root.render(
-    <>
-      <span style={{ opacity: 0.5, margin: "0 4px" }}>|</span>
-      <RemainingTime />
-    </>
-  );
+  const sep = document.createElement("span");
+  sep.className = "ytp-time-separator";
+  sep.textContent = " | ";
+  sep.style.marginLeft = "6px";
+  sep.style.marginRight = "0px";
+  sep.style.color = "#fff";
+  container.appendChild(sep);
+
+  const reactHost = document.createElement("span");
+  reactHost.id = "yt-remaining-react-host";
+  reactHost.style.color = "#fff";
+  container.appendChild(reactHost);
+
+  durationEl.insertAdjacentElement("afterend", container);
+
+  const root = createRoot(reactHost);
+  root.render(<RemainingTime />);
 }
 
 const observer = new MutationObserver(mount);
